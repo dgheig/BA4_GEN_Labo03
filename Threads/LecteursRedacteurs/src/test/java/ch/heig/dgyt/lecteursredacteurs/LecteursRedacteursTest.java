@@ -62,5 +62,4 @@ public class LecteursRedacteursTest {
         assertFalse(lecteur3.isWaiting());
         lecteur3.stopRead();
     }
-
 }
