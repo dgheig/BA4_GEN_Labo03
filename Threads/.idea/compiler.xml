@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Banque" target="1.5" />
+      <module name="Banque" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
