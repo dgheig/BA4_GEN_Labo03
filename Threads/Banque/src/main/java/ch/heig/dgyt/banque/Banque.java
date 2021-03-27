@@ -14,7 +14,7 @@ public class Banque {
             comptes.add(new Compte(i, creditInitial));
         }
     }
-    
+
     public int getNbComptes() {
         return comptes.size();
     }
