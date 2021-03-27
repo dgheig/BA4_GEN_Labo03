@@ -15,10 +15,6 @@ public class Banque {
         }
     }
 
-    public List<Compte> getAccounts(){
-        return this.comptes;
-    }
-
     public int getNbComptes() {
         return comptes.size();
     }
