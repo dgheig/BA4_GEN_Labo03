@@ -14,11 +14,7 @@ public class Banque {
             comptes.add(new Compte(i, creditInitial));
         }
     }
-
-    public List<Compte> getAccounts(){
-        return this.comptes;
-    }
-
+    
     public int getNbComptes() {
         return comptes.size();
     }
