@@ -9,11 +9,13 @@ public class Lecteur {
         thread = new Thread() {
             @Override
             public synchronized void run() {
-                while (!controleur.read(lecteur)) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                synchronized (controleur) {
+                    while (!controleur.read(lecteur)) {
+                        try {
+                            controleur.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 while(controleur.isAccessing(lecteur));

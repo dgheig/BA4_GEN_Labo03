@@ -9,14 +9,13 @@ public class Redacteur {
         thread = new Thread() {
             @Override
             public synchronized void run() {
-                while (!controleur.write(redacteur)) {
-                    try {
-                        wait();
-                        synchronized (System.out) {
-                            System.out.println(redacteur + " done waiting");
+                synchronized (controleur) {
+                    while (!controleur.write(redacteur)) {
+                        try {
+                            controleur.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
                 while(controleur.isAccessing(redacteur));
