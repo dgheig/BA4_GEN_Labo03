@@ -11,8 +11,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Banque" target="1.5" />
+      <module name="Banque" target="1.8" />
       <module name="LecteursRedacteurs" target="1.8" />
+
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -15,7 +15,6 @@ public class Banque {
         }
     }
 
-
     public int getNbComptes() {
         return comptes.size();
     }
