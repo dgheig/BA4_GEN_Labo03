@@ -8,7 +8,7 @@ public class Transferts extends Thread {
     private int nbTransfertToDo;
     private Random rand = new Random(System.currentTimeMillis());
 
-    Transferts(int nbTransfertToDo, Banque banque) {
+    public Transferts(int nbTransfertToDo, Banque banque) {
         Objects.requireNonNull(banque, "TRANSFERTS CONSTRUCTOR: Bank cannot be null");
         if(nbTransfertToDo < 1)
             throw new RuntimeException("Transfert number must be strictly positive");
@@ -16,11 +16,11 @@ public class Transferts extends Thread {
         this.nbTransfertToDo = nbTransfertToDo;
     }
 
-    Transferts(int nbTransfertToDo, int nbAccount) {
+    public Transferts(int nbTransfertToDo, int nbAccount) {
         this(nbTransfertToDo, new Banque(nbAccount));
     }
 
-    Transferts(int nbTransfertToDo) {
+    public Transferts(int nbTransfertToDo) {
         this(nbTransfertToDo, 5);
     }
 
@@ -33,7 +33,13 @@ public class Transferts extends Thread {
             int fromAccount = rand.nextInt(banque.getNbComptes());
             int toAccount = rand.nextInt(banque.getNbComptes());
             int amount = rand.nextInt(10);
-            banque.transfert(fromAccount, toAccount, amount);
+
+            synchronized ((Integer) fromAccount){
+                synchronized ((Integer) toAccount){
+                    banque.transfert(fromAccount, toAccount, amount);
+                }
+            }
+
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {

@@ -15,7 +15,6 @@ public class TransfertsTests {
     @BeforeEach
     public void setUp() throws Exception {
         banque = new Banque(10);
-        System.out.println("Bank is null: " + banque==null);
     }
 
     @Test
