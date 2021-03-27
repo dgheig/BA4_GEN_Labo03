@@ -34,7 +34,6 @@ public class Transferts extends Thread {
             int toAccount = rand.nextInt(banque.getNbComptes());
             int amount = rand.nextInt(10);
             banque.transfert(fromAccount, toAccount, amount);
-            //System.out.println("Transferring money: " + fromAccount + "->" + toAccount + ": " + amount ". Recipient now has: " + Bank.);
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {
