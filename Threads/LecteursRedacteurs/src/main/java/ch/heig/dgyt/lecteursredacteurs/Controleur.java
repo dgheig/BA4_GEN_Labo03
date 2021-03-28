@@ -14,12 +14,14 @@ public class Controleur {
         if(lecteur == null)
             return false;
         synchronized (readLock) {
-            while (this.redacteur != null)
+            while (this.redacteur != null) {
+                System.out.println(lecteur + " is trying to read");
                 try {
                     readLock.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
             lecteurs.add(lecteur);
         }
         return true;
@@ -29,7 +31,8 @@ public class Controleur {
         if (redacteur == null)
             return false;
         synchronized (writeLock) {
-            while (this.redacteur != redacteur || !lecteurs.isEmpty()) {
+            while ((this.redacteur != null && this.redacteur != redacteur) || !lecteurs.isEmpty()) {
+                System.out.println(redacteur + " is trying to write");
                 if (this.redacteur == null)
                     this.redacteur = redacteur;
                 try {
@@ -38,6 +41,8 @@ public class Controleur {
                     e.printStackTrace();
                 }
             }
+            if (this.redacteur == null)
+                this.redacteur = redacteur;
         }
         return true;
     }
@@ -56,6 +61,7 @@ public class Controleur {
     }
     synchronized void close(Redacteur redacteur) {
         if(this.redacteur != null && this.redacteur == redacteur) {
+            System.out.println(redacteur + " is closing");
             this.redacteur = null;
             notifyLecteursRedacteurs();
         }
