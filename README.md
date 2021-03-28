@@ -17,3 +17,9 @@
 ## Todo
 
 * Run tests for lecteursredacteurs from travis CI
+
+
+
+## Issues
+
+* 
