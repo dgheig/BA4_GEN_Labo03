@@ -18,23 +18,11 @@ public class Lecteur {
 
     public synchronized void startRead() {
         thread.start();
-        System.out.println("Setting up " + this + ": " + thread.getState());
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        System.out.println("After 1sec " + this + ": " + thread.getState());
     }
 
     public synchronized void stopRead() {
         synchronized (this.controleur) {
             this.controleur.close(this);
-        }
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            System.out.println(e);
         }
     }
 

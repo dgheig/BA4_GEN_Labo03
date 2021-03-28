@@ -34,9 +34,13 @@ public class LecteursRedacteursTest {
     @Test
     public void lecteursRedacteurs() throws InterruptedException {
         lecteur1.startRead();
+        sleep();
         lecteur2.startRead();
+        sleep();
         redacteur1.startWrite();
+        sleep();
         lecteur3.startRead();
+        sleep();
 
         // lecteurs 1 et 2 passent
         // puis redacteur1 attends et donc lecteur3 aussi
@@ -44,23 +48,35 @@ public class LecteursRedacteursTest {
         assertTrue(lecteur3.isWaiting());
         assertFalse(lecteur1.isWaiting());
         lecteur1.stopRead();
+        sleep();
         assertFalse(lecteur2.isWaiting());
         lecteur2.stopRead();
+        sleep();
 
         // Après lecteurs 1 et 2, c'est à redacteur1
         assertTrue(lecteur3.isWaiting());
         assertFalse(redacteur1.isWaiting());
         redacteur2.startWrite();
+        sleep();
         redacteur1.stopWrite();
+        sleep();
 
         // redacteur 1 libère mais redacteur 2 passe avant lecteur 3
         assertTrue(lecteur3.isWaiting());
         assertFalse(redacteur2.isWaiting());
         redacteur2.stopWrite();
+        sleep();
 
         // après les redacteurs , lecteur3 est libéré
         assertFalse(lecteur3.isWaiting());
         lecteur3.stopRead();
     }
 
+    private void sleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 }

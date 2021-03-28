@@ -71,7 +71,6 @@ public class Controleur {
         synchronized (writeLock) {
             writeLock.notifyAll();
         }
-        sleep();
         synchronized (readLock) {
             readLock.notifyAll();
         }
