@@ -8,31 +8,37 @@ public class Redacteur {
         this.controleur = controleur;
         thread = new Thread() {
             @Override
-            public synchronized void run() {
-                synchronized (controleur) {
-                    while (!controleur.write(redacteur)) {
-                        try {
-                            controleur.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+            public void run() {
+                while (!controleur.write(redacteur));
                 while(controleur.isAccessing(redacteur));
             }
         };
-        thread.setPriority(Thread.MAX_PRIORITY);
     }
 
     public synchronized void startWrite() {
         thread.start();
+        System.out.println("Setting up " + this + ": " + thread.getState());
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        System.out.println("After 1sec " + this + ": " + thread.getState());
     }
 
     public synchronized void stopWrite() {
-        this.controleur.close(this);
+        synchronized (this.controleur) {
+            this.controleur.close(this);
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public synchronized boolean isWaiting() {
-        return thread.getState() == Thread.State.WAITING;
+        System.out.println(this + ": " + thread.getState());
+        return thread.getState() != Thread.State.RUNNABLE;
     }
 }

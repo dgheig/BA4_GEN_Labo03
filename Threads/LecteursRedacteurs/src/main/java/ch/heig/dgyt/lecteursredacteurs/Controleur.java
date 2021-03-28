@@ -7,19 +7,39 @@ import java.util.Set;
 public class Controleur {
     private Set<Lecteur> lecteurs = new HashSet<>();
     private Redacteur redacteur;
+    private Object readLock = new Object();
+    private Object writeLock = new Object();
 
-    synchronized boolean read(Lecteur lecteur) {
-        if(lecteur == null || redacteur != null)
+    boolean read(Lecteur lecteur) {
+        if(lecteur == null)
             return false;
-        lecteurs.add(lecteur);
+        synchronized (readLock) {
+            while (this.redacteur != null)
+                try {
+                    readLock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            lecteurs.add(lecteur);
+        }
         return true;
     }
 
-    synchronized boolean write(Redacteur redacteur) {
-        if(this.redacteur != null || redacteur == null)
+    boolean write(Redacteur redacteur) {
+        if (redacteur == null)
             return false;
-        this.redacteur = redacteur;
-        return lecteurs.isEmpty();
+        synchronized (writeLock) {
+            while (this.redacteur != redacteur || !lecteurs.isEmpty()) {
+                if (this.redacteur == null)
+                    this.redacteur = redacteur;
+                try {
+                    writeLock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return true;
     }
 
     synchronized boolean isAccessing(Lecteur lecteur) {
@@ -31,14 +51,31 @@ public class Controleur {
 
     synchronized void close(Lecteur lecteur) {
         if(lecteurs.remove(lecteur) && lecteurs.size() == 0) {
-            this.redacteur = null;
-            this.notifyAll();
+            notifyLecteursRedacteurs();
         }
     }
     synchronized void close(Redacteur redacteur) {
         if(this.redacteur != null && this.redacteur == redacteur) {
             this.redacteur = null;
-            this.notifyAll();
+            notifyLecteursRedacteurs();
+        }
+    }
+
+    private synchronized void notifyLecteursRedacteurs() {
+        synchronized (writeLock) {
+            writeLock.notifyAll();
+        }
+        sleep();
+        synchronized (readLock) {
+            readLock.notifyAll();
+        }
+    }
+
+    private void sleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
 
