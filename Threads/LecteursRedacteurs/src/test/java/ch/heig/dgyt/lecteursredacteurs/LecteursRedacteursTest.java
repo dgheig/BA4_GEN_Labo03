@@ -34,13 +34,9 @@ public class LecteursRedacteursTest {
     @Test
     public void lecteursRedacteurs() throws InterruptedException {
         lecteur1.startRead();
-        sleep();
         lecteur2.startRead();
-        sleep();
         redacteur1.startWrite();
-        sleep();
         lecteur3.startRead();
-        sleep();
 
         // lecteurs 1 et 2 passent
         // puis redacteur1 attends et donc lecteur3 aussi
