@@ -80,11 +80,15 @@ public class Controleur {
                     writeLock.notifyAll();
                 }
                 while(redacteur == null);
-            } else {
-                synchronized (readLock) {
-                    readLock.notifyAll();
-                }
             }
+        }
+        synchronized (readLock) {
+            readLock.notifyAll();
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -89,6 +89,10 @@ Il y a évidement un risque de ce retrouver avec un boucle infini, si par exempl
 
 
 
+Edit: 30 tests sur 30 réussis au travers d'Idea. Au moment de faire valider par travis, nous observons que le problème n'était pas résolu avec la commande `mvn clean test`. Nous avons donc remis un sleep après les notifyall. Le test est à présent valider à chaque fois mais cette solution est très circonstancielle et n'apporte aucune garantie dans un programme plus complexe.
+
+
+
 ## Links
 
 * [Travis CI](https://travis-ci.com/github/YanickHEIG/BA4_GEN_Labo3)
