@@ -4,7 +4,18 @@ after_success:
 cache:
   directories:
     - $HOME/.m2
-script: 
-  - cd Threads/Banque
-  - echo "Testbot at work..."
-  - mvn clean test
+
+jobs:
+  include:
+    - stage: Banque
+      script:
+        - cd Threads/Banque
+        - echo "Testbot at work..."
+        - mvn clean test
+    - # stage name not required, will continue to use `test`
+      script: ./test 2
+    - stage: LecteursRedacteurs
+      script:
+        - cd Threads/LecteursRedacteurs
+        - echo "Testbot at work..."
+        - mvn clean test
