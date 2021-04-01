@@ -22,9 +22,6 @@ public class Lecteur {
     public synchronized void startRead() {
         reading = false;
         thread.start();
-        // We know that we either will have read access (=> reading == true) or the thread will change its state
-        while(reading == false && thread.getState() == Thread.State.RUNNABLE);
-    }
 
     public synchronized void stopRead() {
         this.controleur.close(this);
